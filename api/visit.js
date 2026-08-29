@@ -1,57 +1,38 @@
 export default async function handler(req, res) {
     if (req.method !== "POST") {
-        return res.status(405).json({ error: "Method not allowed" });
+        return res.status(405).end();
     }
 
-    const webhook = process.env.DISCORD_WEBHOOK;
+    const a1232 = process.env.a1232;
 
-    if (!webhook) {
+    if (!a1232) {
         return res.status(500).end();
     }
 
     const ip =
         req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
-        req.headers["x-real-ip"] ||
         "Unknown";
 
-    const embed = {
-        embeds: [
-            {
-                title: "New Website Visit",
-                description: "A new visitor has entered Watch4Land.",
-                color: 10181046,
-                fields: [
-                    {
-                        name: "Visitor IP",
-                        value: `\`${ip}\``,
-                        inline: true
-                    },
-                    {
-                        name: "Status",
-                        value: "Online",
-                        inline: true
-                    }
-                ],
-                footer: {
-                    text: "Watch4Land"
-                },
-                timestamp: new Date().toISOString()
-            }
-        ]
-    };
-
     try {
-        const response = await fetch(webhook, {
+        await fetch(a1232, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(embed)
+            body: JSON.stringify({
+                embeds: [{
+                    title: "a3212",
+                    description: "New visitor entered the website.",
+                    color: 10181046,
+                    fields: [{
+                        name: "IP",
+                        value: `\`${ip}\``,
+                        inline: true
+                    }],
+                    timestamp: new Date().toISOString()
+                }]
+            })
         });
-
-        if (!response.ok) {
-            return res.status(502).end();
-        }
 
         return res.status(204).end();
     } catch {
