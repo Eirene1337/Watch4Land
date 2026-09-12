@@ -3,13 +3,14 @@ export const config = {
 };
 
 export default function middleware(request) {
-
   if (process.env.MAINTENANCE_MODE === "true") {
-
-    return Response.rewrite(
-      new URL("/maintenance.html", request.url)
-    );
-
+    return new Response(null, {
+      status: 307,
+      headers: {
+        Location: "/maintenance.html",
+      },
+    });
   }
 
+  return;
 }
